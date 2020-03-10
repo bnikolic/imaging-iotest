@@ -4,7 +4,9 @@ SDP Distributed Predict/Imaging I/O Prototype
 
 This is a prototype exploring the capability of hardware and software
 to deal with the types of I/O loads that the SDP will have to support
-for full-scale operation on SKA1 (and beyond).
+for full-scale operation on SKA1 (and beyond). A description of the
+design and initial results is published in [SDP Memo
+102](http://ska-sdp.org/sites/default/files/attachments/distributed_predict_io_prototype_part_1_-_signed.pdf).
 
 Goals:
 ------
@@ -12,7 +14,8 @@ Goals:
 * Focused benchmarking of platform (especially buffer and network) hardware and software
 * Verify parametric model assumptions concerning distributed
   performance and scaling, especially the extended analysis concerning
-  I/O and memory from SDP memo 038 (pipeline-working-sets.pdf)
+  I/O and memory from SDP memo 038
+  [pipeline-working-sets.pdf](http://ska-sdp.org/sites/default/files/attachments/pipeline-working-sets_part_1_-_signed.pdf)
 
 Main aspects:
 
@@ -58,7 +61,7 @@ configuration).
 
 ### Work Balance
 
-Facet and subgrid work is assigned to producer and streamer processes
+Facet and subgrid work is assigned[^1] to producer and streamer processes
 at the start of the run. Facets are large memory objects, and the same
 amount of work needs to be done on each of them, therefore the number
 of nodes should be chosen so we can distribute them evenly - ideally
@@ -122,8 +125,8 @@ support) and FFTW installed. It will use `mpicc` for building, and has
 been tested with both GCC and ICC.
 
 ```
- $ clone https://github.com/SKA-ScienceDataProcessor/io_test.git
- $ cd io_test/src
+ $ git clone https://github.com/SKA-ScienceDataProcessor/imaging-iotest.git
+ $ cd src
  $ git lfs pull origin
  $ make iotest
 ```
@@ -237,3 +240,5 @@ does not currently implement parallel HDF5, so different streamer
 processes will have to write separate output files. The name can be
 made dependent on streamer ID by putting a `%d` placeholder into it so
 it won't cause conflicts on shared file systems.
+
+[^1]: The routines for this are in config.h/config.c module
